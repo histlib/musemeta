@@ -50,4 +50,4 @@ met_parse <- function(x, ascii, id){
   structure(nonascii(list(name = id, values = tags), ascii), class = "muse")
 }
 
-metbase <- function() "http://www.metmuseum.org/collection/the-collection-online/search/"
+metbase <- function() "http://www.metmuseum.org/art/collection/search/"
