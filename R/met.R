@@ -38,8 +38,8 @@ met_parse <- function(x, ascii, id){
   #tcon <- xpathApply(tmp, "//div[@class='tombstone-container']")[[1]]
   #tcon <- xpathApply(tmp, "//div[@class='collection-details__tombstone']")[[1]]
   title <- strw(strsplit(xml2::xml_text(xml2::xml_find_first(tmp, "//title")), "\\|")[[1]])[[2]]
-  link <- strw(strsplit(xml2::xml_text(xml2::xml_find_first(tmp, "//link/@href"))))
-  img <- strw(strsplit(xml2::xml_text(xml2::xml_find_first(tmp, "//meta[@property='og:image']"))))
+  link <- xml2::xml_find_first(tmp, "//link/@href")
+  img <- xml2::xml_find_first(tmp, "//meta[@property='og:image']")
   tcon <- xml2::xml_find_first(tmp, "//div[@class='collection-details__tombstone']")
   details <- xml2::xml_find_first(tmp, "//div[@class='l-component-block']")
   name <- c("title", gsub(":", "", xml2::xml_text(xml2::xml_find_all(tcon, "//dt"))))
