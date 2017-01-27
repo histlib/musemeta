@@ -37,10 +37,11 @@ met_parse <- function(x, ascii, id){
   tmp <- xml2::read_html(x)
   #tcon <- xpathApply(tmp, "//div[@class='tombstone-container']")[[1]]
   #tcon <- xpathApply(tmp, "//div[@class='collection-details__tombstone']")[[1]]
-  title <- strw(strsplit(xml2::xml_text(xml2::xml_find_first(tmp, "//title")), "\\|"))[[2]]
+  title <- strw(strsplit(xml2::xml_text(xml2::xml_find_first(tmp, "//title")), "\\|"))[[2]])[[2]]
   link <- strw(strsplit(xml2::xml_text(xml2::xml_find_first(tmp, "//link/@href"))))
   img <- strw(strsplit(xml2::xml_text(xml2::xml_find_first(tmp, "//meta[@property='og:image']"))))
   tcon <- xml2::xml_find_first(tmp, "//div[@class='collection-details__tombstone']")
+  details <- xml2::xml_find_first(tmp, "//div[@class='l-component-block']")
   name <- c("title", gsub(":", "", xml2::xml_text(xml2::xml_find_all(tcon, "//dt"))))
   tags <- c(title, xml2::xml_text(xml2::xml_find_all(tcon, "//dd")))
   tags <- unname(Map(function(x, y) list(name = x, value = y), name, tags))
