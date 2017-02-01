@@ -27,6 +27,11 @@ met <- function(id, ascii = FALSE, ...){
   met_parse(out, ascii, id)
 }
 
+met_details <- function(id, ascii = FALSE, ...){
+  out <- musemeta_GET(paste0(metbase(), id), config(followlocation = TRUE), ...)
+  met_add(out, ascii, id)
+}
+
 #' @export
 #' @rdname met
 muse_get <- function(id, ...){
@@ -41,9 +46,8 @@ met_parse <- function(x, ascii, id){
   link <- xml2::xml_find_first(tmp, "//@href")
   img <- xml2::xml_find_first(tmp, "//meta[@property='og:image']")
   tcon <- xml2::xml_find_first(tmp, "//div[@class='collection-details__tombstone']")
-  details <- xml2::xml_find_first(tmp, "//div[@class='collection-details__accordion-container']")
   name <- c("title", gsub(":", "", xml2::xml_text(xml2::xml_find_all(tcon, "//dt"))))
-  tags <- c(title, xml2::xml_text(xml2::xml_find_all(tcon, "//dd")))
+  tags <- c(title, link, img, xml2::xml_text(xml2::xml_find_all(tcon, "//dd")))
   tags <- unname(Map(function(x, y) list(name = x, value = y), name, tags))
   # tomb <- xpathApply(tcon, "//div[@class='tombstone']")[[1]]
   # tags <- lapply(xpathApply(tomb, "div"), function(x){
@@ -52,5 +56,15 @@ met_parse <- function(x, ascii, id){
   # })
   structure(nonascii(list(name = id, values = tags), ascii), class = "muse")
 }
+                     
+met_add <- function(x, ascii, id){
+  details <- xml2::xml_find_first(tmp, "//div[@class='collection-details__accordion-container']")
+  title <- strw(strsplit(xml2::xml_text(xml2::xml_find_first(tmp, "//title")), "\\|")[[1]])[[2]]
+  link <- xml2::xml_find_first(tmp, "//@href")
+  img <- xml2::xml_find_first(tmp, "//meta[@property='og:image']")
+  name <- c("title", gsub(":", "", xml2::xml_text(xml2::xml_find_all(details, "//header"))))
+  tags <- c(title, link, img, xml2::xml_text(xml2::xml_find_all(details, "//br")))
+  structure(nonascii(list(name = id, values = tags), ascii), class = "muse")
+  }
 
 metbase <- function() "http://www.metmuseum.org/art/collection/search/"
