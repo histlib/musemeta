@@ -54,13 +54,5 @@ met_parse <- function(x, ascii, id){
   # })
   structure(nonascii(list(name = id, values = tags), ascii), class = "muse")
 }
-                     
-met_add <- function(x, ascii, id){
-  details <- xml2::xml_find_first(tmp, "//div[@class='collection-details__accordion-container']")
-  title <- strw(strsplit(xml2::xml_text(xml2::xml_find_first(tmp, "//title")), "\\|")[[1]])[[2]]
-  name <- c("title", gsub(":", "", xml2::xml_text(xml2::xml_find_all(details, "//header"))))
-  tags <- c(title, xml2::xml_text(xml2::xml_find_all(details, "//br")))
-  structure(nonascii(list(name = id, values = tags), ascii), class = "muse")
-  }
 
 metbase <- function() "http://www.metmuseum.org/art/collection/search/"
