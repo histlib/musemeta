@@ -27,11 +27,6 @@ met <- function(id, ascii = FALSE, ...){
   met_parse(out, ascii, id)
 }
 
-met_details <- function(id, ascii = FALSE, ...){
-  out <- musemeta_GET(paste0(metbase(), id), config(followlocation = TRUE), ...)
-  met_add(out, ascii, id)
-}
-
 #' @export
 #' @rdname met
 muse_get <- function(id, ...){
